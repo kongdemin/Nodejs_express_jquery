@@ -8,7 +8,7 @@ var bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 var  session = require('express-session');
 //连接数据库
-mongoose.connect('mongodb://localhost/shop');
+mongoose.connect('mongodb://localhost/shop',{useMongoClient:true});
 var index = require('./routes/index');
 var users = require('./routes/users');
 
