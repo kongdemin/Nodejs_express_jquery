@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router();
 var UserModel = require("../model/User");
 var GoodsModel = require("../model/Goods");
-var ContModel = require("../model/cont");
 var multiparty = require("multiparty");
 /* GET home page. */
 
@@ -39,10 +38,76 @@ router.get('/', function(req, res, next) {
 });
 router.get('/product', function(req, res, next) {
   res.render('product', {});
+  
 });
+router.get('/loadpro', function(req, res, next) {
+		//console.log(req.query);
+ 		var keywords =  req.query.keywords;
+ 		console.log(keywords);
+ 		//console.log( keywords);
+ 		var pageNO = req.query.pageNO || 1;
+ 		pageNO = parseInt(pageNO);
+ 		var perPageCnt = req.query.perPageCnt || 15;
+		perPageCnt = parseInt(perPageCnt);
+		if(keywords != undefined){
+				GoodsModel.count({goods_name:{$regex: keywords},indate : 1}, function(err, count){
+					console.log("数量:" + count);
+					var query = GoodsModel.find({goods_name:{$regex: keywords},indate : 1})
+					.skip((pageNO-1)*perPageCnt).limit(perPageCnt);
+					query.exec(function(err, docs){
+						//console.log(err, docs);
+						var result = {
+							total: count,
+							data: docs,
+							pageNO: pageNO
+						}
+						res.json(result);
+					});
+				})
+		}else{
+			GoodsModel.count({indate : 1}, function(err, count){
+				//console.log("数量:" + count);
+				var query = GoodsModel.find({indate : 1})
+				.skip((pageNO-1)*perPageCnt).limit(perPageCnt);
+				query.exec(function(err, docs){
+					//console.log(err, docs);
+					var result = {
+						total: count,
+						data: docs,
+						pageNO: pageNO
+					}
+					res.json(result);
+				});
+			})
+		}
+		
+});
+
+router.get('/update', function(req, res, next) {
+		var goods_Id = req.query.goods_Id;
+		console.log(goods_Id);
+		GoodsModel.update({goods_Id:goods_Id},{$set:{indate:0}}, function(err){
+			if(err){
+				console.log(err);
+			}else{
+				res.send("删除成功");
+			}
+		})
+});
+
+
+
+
 router.get('/addgood', function(req, res, next) {
   res.render('addgood', {});
 });
+
+
+
+
+
+
+
 
 
 router.post('/api/goods_upload', function(req, res, next) {
@@ -53,29 +118,16 @@ router.post('/api/goods_upload', function(req, res, next) {
 		code: 1,
 		message: "商品信息保存成功"
 	};
-	
-	ContModel.find({},(err, docs)=>{
-			if(docs.length > 0){
-			var num =	docs[docs.length - 1].cont;
-			}
-			form.parse(req, function(err, body, files){
+	GoodsModel.count({}, function(err, count){
+		form.parse(req, function(err, body, files){
 			if(err) {
 				console.log(err);
 			}
-			//console.log(body);
+			var goods_Id =100 + count;
 			var goods_name = body.goods_name[0];
 			var price = body.price[0];
-			var imgPath = body.imgPath[0];
-			var goods_ID = num;
-			
-			var sum = new ContModel();
-			sum.cont = num + 1 ;
-			sum.save(function(err){
-				if(err){
-					console.log("更新数字失败");
-				}
-			})
-			var goods_Number = body.goods_Number[0] || goods_ID;
+			var imgPath =" ";
+		  var goods_Number = body.goods_Number[0] || goods_Id;
 			var putaway = body.putaway[0];
 			var boutique = body.boutique[0];
 			var goods_new = body.goods_new[0];
@@ -86,14 +138,16 @@ router.post('/api/goods_upload', function(req, res, next) {
 			gm.goods_name = goods_name;
 			gm.price = price;
 			gm.imgPath = imgPath;
-			gm.goods_Id = goods_ID;
+			gm.goods_Id = goods_Id;
 			gm.goods_Number =goods_Number;
 			gm.putaway = putaway ;
 			gm.boutique = boutique;
 			gm.goods_new = goods_new ;
 			gm.goods_hot = goods_hot;
+			gm.goods_sort =100;
 			gm.repertory = repertory ;
 			gm.virtualsale =virtualsale;
+			gm.indate = 1 ;
 			gm.save(function(err){
 				if(err) {
 					result.code = -99;
@@ -101,9 +155,10 @@ router.post('/api/goods_upload', function(req, res, next) {
 				}
 				res.json(result);
 			})
+		})
+			
 	})
-	
-	})
+		
 });
 
 

@@ -2,6 +2,7 @@
 	<head>
 		<title></title>
 		<link rel="stylesheet" type="text/css" href="/stylesheets/product.css"/>
+		<script src="/js/jquery-1.11.3.js" type="text/javascript" charset="utf-8"></script>
 	</head>
 	<body>
 		<div id="productList">
@@ -49,10 +50,16 @@
 						</tr>
 		
 					</thead>
-						<tr class="hidden"><td colspan="10">没有找到任何记录</td></tr>
-					<tbody>
+						<tr class="hidden">
+							<td colspan="12">
+								没有找到任何商品
+							</td>
+							
+						</tr>
+						
+					<tbody class="list">
 					
-						<tr>
+						<!--<tr>
 							<td><input type="checkbox" name="checkboxes[]" value="155">155</td>
 							<td ><span title="点击修改内容">辣条</span></td>
 							<td ><span >777777</span></td>
@@ -70,7 +77,7 @@
 							  <a href="javascript:;" title="复制"><img src="/images/bg13.gif" ></a>
 							  <a href="javascript:;" title="回收站"><img src="/images/bg16.gif"></a>
 							</td>
-						</tr>
+						</tr>-->
 					</tbody>
 					<tfoot>
 						<tr>
@@ -80,14 +87,15 @@
 					        	总计  <span id="totalRecords">1</span>
 					        	个记录分为 <span id="totalPages">1</span>
 					        	页当前第 <span id="pageCurrent">1</span>
-					      	 	 页，每页 <input type="text" size="3" id="pageSize" value="15" onkeypress="return listTable.changePageSize(event)">
+					      	 	 页，每页 <input type="text" size="3" id="pageSize" value="15">
 					        
-					          <a href="javascript:;">第一页</a>
-					          <a href="javascript:;">上一页</a>
-					          <a href="javascript:;">下一页</a>
-					          <a href="javascript:;">最末页</a>
-					          <select id="gotoPage" onchange="listTable.gotoPage(this.value)">
-					            <option value="1">1</option>          </select>
+					          <a href="javascript:;" id="firstPage">第一页</a>
+					          <a href="javascript:;" id="upPage">上一页</a>
+					          <a href="javascript:;" id="downPage">下一页</a>
+					          <a href="javascript:;" id="endPage">最末页</a>
+					          <select id="gotoPage">
+					            
+					          </select>
 					        
 					      	</div>
 					    </td>

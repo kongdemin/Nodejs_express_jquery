@@ -13,7 +13,7 @@ var Goods = new Schema({
     repertory    : Number,
     virtualsale  : Number,
     imgPath      : String,
-    
+    indate		 : Number,
     create_date: { type: Date, default: Date.now }
 });
 // 创建model对象

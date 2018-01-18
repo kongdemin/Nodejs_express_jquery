@@ -37,6 +37,7 @@ $("#goods_hot").click(function(){
 })
 $("#addpro").click(function(){
 	upload();
+	
 })
 $("#reset").click(function(){
 	if(confirm("是否清楚已经填写的数据")){
@@ -64,7 +65,11 @@ function upload() {
 			console.log(xhr.responseText);
 			var res = JSON.parse(xhr.responseText);
 			alert(res.message);
+			location.href = "/product";
 		}
 	}
 	
 }
+$(".head b").click(function(){
+	location.href = "/product";
+})
