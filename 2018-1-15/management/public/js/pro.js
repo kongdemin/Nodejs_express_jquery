@@ -60,7 +60,7 @@ function loadpro(keywords,page,cont){
 					img4 = '<img src="/images/no.gif">'
 				}
 				 str += `<tr>
-						<td><input type="checkbox" name="checkboxes[]" value="155">${goods_Id}</td>
+						<td><input type="checkbox" name="checkboxes[]" value="155"><span>${goods_Id}</span></td>
 						<td ><span title="点击修改内容">${goods_name}</span></td>
 						<td ><span >${goods_Number}</span></td>
 						<td ><span  title="点击修改内容" >${price}</span></td>
@@ -148,8 +148,12 @@ function update(goods_Id){
 			goods_Id:goods_Id
 			},
 			success:function(res){
-				console.log(res);
+				alert(res);
+				loadpro();
 			}
 		})
 	}
 }
+//$(".list").delegate("","click",function(){
+//	var text =this.innerHTML;
+//})

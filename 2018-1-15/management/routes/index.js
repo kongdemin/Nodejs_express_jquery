@@ -51,7 +51,7 @@ router.get('/loadpro', function(req, res, next) {
 		perPageCnt = parseInt(perPageCnt);
 		if(keywords != undefined){
 				GoodsModel.count({goods_name:{$regex: keywords},indate : 1}, function(err, count){
-					console.log("数量:" + count);
+					//console.log("数量:" + count);
 					var query = GoodsModel.find({goods_name:{$regex: keywords},indate : 1})
 					.skip((pageNO-1)*perPageCnt).limit(perPageCnt);
 					query.exec(function(err, docs){
